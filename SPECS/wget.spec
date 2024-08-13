@@ -1,7 +1,7 @@
 Summary: A utility for retrieving files using the HTTP or FTP protocols
 Name: wget
 Version: 1.19.5
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: GPLv3+
 Group: Applications/Internet
 Url: http://www.gnu.org/software/wget/
@@ -23,6 +23,7 @@ Patch10: wget-1.19.5-no_proxy-tests.patch
 # http://git.savannah.gnu.org/cgit/wget.git/commit/?id=706e71564cadc7192ac21efbf51b661c967f35b5
 Patch11: wget-1.19.5-ca-cert-too-verbose.patch
 Patch12: wget-1.19.5-no-log-when-quiet.patch
+Patch13: wget-1.19.5-CVE-2024-38428.patch
 
 Provides: webclient
 Provides: bundled(gnulib) 
@@ -60,6 +61,7 @@ grep "PACKAGE_STRING='wget .* (Red Hat modified)'" configure || exit 1
 %patch10 -p1 -b .no_proxy-test
 %patch11 -p1 -b .too_verbose
 %patch12 -p1 -b .no-log-quiet
+%patch13 -p1 -b .CVE-2024-38428
 
 %build
 %configure \
@@ -106,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/*
 
 %changelog
+* Wed Jul 10 2024 Michal Ruprich <mruprich@redhat.com> - 1.19.5-12
+- Resolves: RHEL-43559 - Misinterpretation of input may lead to improper behavior
+
 * Tue Dec 13 2022 Michal Ruprich <mruprich@redhat.com> - 1.19.5-11
 - Resolves: #2152731 - Running wget with -O and -q in the background yields a file wget-log
 
