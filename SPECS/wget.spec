@@ -1,7 +1,7 @@
 Summary: A utility for retrieving files using the HTTP or FTP protocols
 Name: wget
 Version: 1.21.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv3+
 Url: http://www.gnu.org/software/wget/
 Source: ftp://ftp.gnu.org/gnu/wget/wget-%{version}.tar.gz
@@ -10,6 +10,7 @@ Patch1: wget-1.17-path.patch
 Patch2: wget-1.21-strtol.patch
 Patch3: wget-1.21-metalink-man.patch
 Patch4: wget-1.21-segfault.patch
+Patch5: wget-1.21-CVE-2024-38428.patch
 
 Provides: webclient
 Provides: bundled(gnulib) 
@@ -69,6 +70,9 @@ make check
 %{_infodir}/*
 
 %changelog
+* Mon Jul 15 2024 Michal Ruprich <mruprich@redhat.com> - 1.21.1-8
+- Resolves: RHEL-43226 - Misinterpretation of input may lead to improper behavior
+
 * Tue Nov 02 2021 Michal Ruprich <mruprich@redhat.com> - 1.21.1-7
 - Resolves: #2017842 - Two different segfaults when downloading multiple files
 - Removing metalink from manpage
