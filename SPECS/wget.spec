@@ -1,7 +1,7 @@
 Summary: A utility for retrieving files using the HTTP or FTP protocols
 Name: wget
 Version: 1.19.5
-Release: 12%{?dist}
+Release: 16%{?dist}
 License: GPLv3+
 Group: Applications/Internet
 Url: http://www.gnu.org/software/wget/
@@ -24,6 +24,17 @@ Patch10: wget-1.19.5-no_proxy-tests.patch
 Patch11: wget-1.19.5-ca-cert-too-verbose.patch
 Patch12: wget-1.19.5-no-log-when-quiet.patch
 Patch13: wget-1.19.5-CVE-2024-38428.patch
+# https://gitlab.com/gnuwget/wget/-/commit/dd692d9cea5335b181d877ae917fe6e75587a812
+# https://gitlab.com/gnuwget/wget/-/commit/f76978a51ba9365e7ecaed96c1cfb73197a38ca2
+Patch14: wget-1.19.5-CVE-2026-58472.patch
+# https://gitlab.com/gnuwget/wget/-/commit/3514c0f2ad4e3d8a2e9ad0893accdb7a21cae729
+Patch15: wget-1.19.5-CVE-2026-58471.patch
+# https://gitlab.com/gnuwget/wget/-/commit/37a40fcb450153f69537c7cbc2a7a4fb0b6f7826
+# https://gitlab.com/gnuwget/wget/-/commit/7b1cdecc49bc77bde220fc575c8a00386c3f3bcf
+# https://gitlab.com/gnuwget/wget/-/commit/82d945ff5dc9942b78b2bf736aac298c24fe00a1
+Patch16: wget-1.19.5-CVE-2026-58469.patch
+# https://gitlab.com/gnuwget/wget/-/merge_requests/72
+Patch17: wget-1.19.5-async-safe-signal-handler.patch
 
 Provides: webclient
 Provides: bundled(gnulib) 
@@ -62,6 +73,10 @@ grep "PACKAGE_STRING='wget .* (Red Hat modified)'" configure || exit 1
 %patch11 -p1 -b .too_verbose
 %patch12 -p1 -b .no-log-quiet
 %patch13 -p1 -b .CVE-2024-38428
+%patch14 -p1 -b .CVE-2026-58472
+%patch15 -p1 -b .CVE-2026-58471
+%patch16 -p1 -b .CVE-2026-58469
+%patch17 -p1 -b .async-signal-handler
 
 %build
 %configure \
@@ -108,6 +123,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/*
 
 %changelog
+* Tue Aug 04 2026 Michal Ruprich <mruprich@redhat.com> - 1.19.5-16
+- Resolves: RHEL-145875 - async unsafe code in signal handler context
+
+* Tue Jul 21 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.19.5-15
+- Fix CVE-2026-58469: buffer underflow in clean_metalink_string()
+- Resolves: RHEL-212496
+
+* Wed Jul 15 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.19.5-14
+- Fix CVE-2026-58471: buffer overflow in convert_fname()
+- Resolves: RHEL-194519
+
+* Wed Jul 15 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.19.5-13
+- Fix CVE-2026-58472: integer and buffer overflow in html_quote_string()
+- Resolves: RHEL-210627
+
 * Wed Jul 10 2024 Michal Ruprich <mruprich@redhat.com> - 1.19.5-12
 - Resolves: RHEL-43559 - Misinterpretation of input may lead to improper behavior
 
