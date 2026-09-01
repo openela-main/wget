@@ -1,7 +1,7 @@
 Summary: A utility for retrieving files using the HTTP or FTP protocols
 Name: wget
 Version: 1.24.5
-Release: 5%{?dist}
+Release: 8%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.1-or-later AND GFDL-1.3-or-later
 Url: http://www.gnu.org/software/wget/
 Source: ftp://ftp.gnu.org/gnu/wget/wget-%{version}.tar.gz
@@ -10,6 +10,13 @@ Patch1: wget-1.17-path.patch
 Patch3: wget-1.21-metalink-man.patch
 Patch5: wget-1.21-CVE-2024-38428.patch
 Patch6: wget-1.24.5-no-nettle.patch
+# https://gitlab.com/gnuwget/wget/-/commit/dd692d9cea5335b181d877ae917fe6e75587a812
+# https://gitlab.com/gnuwget/wget/-/commit/f76978a51ba9365e7ecaed96c1cfb73197a38ca2
+Patch7: wget-1.24.5-CVE-2026-58472.patch
+# https://gitlab.com/gnuwget/wget/-/commit/c2640fe5171c59f87c58dc9fcb195b2d18b010ee
+Patch8: wget-1.24.5-CVE-2026-58471.patch
+# https://gitlab.com/gnuwget/wget/-/merge_requests/72
+Patch9: wget-1.24.5-async-safe-signal-handler.patch
 
 Provides: webclient
 Provides: bundled(gnulib) 
@@ -83,6 +90,17 @@ make check
 %{_infodir}/*
 
 %changelog
+* Mon Aug 03 2026 Michal Ruprich <mruprich@redhat.com> - 1.24.5-8
+- Resolves: RHEL-220498 - async unsafe code in signal handler context
+
+* Wed Jul 15 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.24.5-7
+- Fix CVE-2026-58471: buffer overflow in convert_fname()
+  Resolves: RHEL-194518
+
+* Wed Jul 15 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.24.5-6
+- Fix integer and buffer overflow in html_quote_string()
+  Resolves: RHEL-210625
+
 * Wed Dec 11 2024 Daiki Ueno <dueno@redhat.com> - 1.24.5-5
 - Revert back to using GnuTLS as the TLS backend
 - Use bundled implementation of MD4 for NTLM
