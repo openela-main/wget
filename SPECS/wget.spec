@@ -1,7 +1,7 @@
 Summary: A utility for retrieving files using the HTTP or FTP protocols
 Name: wget
 Version: 1.21.1
-Release: 8%{?dist}
+Release: 11%{?dist}
 License: GPLv3+
 Url: http://www.gnu.org/software/wget/
 Source: ftp://ftp.gnu.org/gnu/wget/wget-%{version}.tar.gz
@@ -11,6 +11,13 @@ Patch2: wget-1.21-strtol.patch
 Patch3: wget-1.21-metalink-man.patch
 Patch4: wget-1.21-segfault.patch
 Patch5: wget-1.21-CVE-2024-38428.patch
+# https://gitlab.com/gnuwget/wget/-/commit/dd692d9cea5335b181d877ae917fe6e75587a812
+# https://gitlab.com/gnuwget/wget/-/commit/f76978a51ba9365e7ecaed96c1cfb73197a38ca2
+Patch6: wget-1.21-CVE-2026-58472.patch
+# https://gitlab.com/gnuwget/wget/-/commit/c2640fe5171c59f87c58dc9fcb195b2d18b010ee
+Patch7: wget-1.21-CVE-2026-58471.patch
+# https://gitlab.com/gnuwget/wget/-/merge_requests/72
+Patch8: wget-1.21.1-async-safe-signal-handler.patch
 
 Provides: webclient
 Provides: bundled(gnulib) 
@@ -70,6 +77,16 @@ make check
 %{_infodir}/*
 
 %changelog
+* Mon Aug 03 2026 Michal Ruprich <mruprich@redhat.com> - 1.21.1-11
+- Resolves: RHEL-220497 - async unsafe code in signal handler context
+
+* Mon Aug 03 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.21.1-10
+- Fix CVE-2026-58471: buffer overflow in convert_fname()
+- Resolves: RHEL-194521
+
+* Wed Jul 15 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 1.21.1-9
+- Resolves: RHEL-210636 - Fix integer+buffer overflow in html_quote_string()
+
 * Mon Jul 15 2024 Michal Ruprich <mruprich@redhat.com> - 1.21.1-8
 - Resolves: RHEL-43226 - Misinterpretation of input may lead to improper behavior
 
